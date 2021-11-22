@@ -14,8 +14,8 @@ Practicas:
 	cd ./3_AccesoMedio/Práctica ; $(TEX) -jobname=Práctica3 "\input{Práctica3.tex}" > Práctica3.log ; cd ../..
 
 Transparencias:
-	cd ./2_CodificadoresCanal/Apuntes ; $(TEX) -jobname=TransparenciasT2 "\input{TransparenciasT2.tex}" > TransparenciasT2.log ; cd ../..
-	cd ./3_AccesoMedio/Apuntes ; $(TEX) -jobname=TransparenciasT3 "\input{TransparenciasT3.tex}" > TransparenciasT3.log ; cd ../..
+	cd ./2_CodificadoresCanal/Transparencias ; $(TEX) -jobname=TransparenciasT2 "\input{TransparenciasT2.tex}" > TransparenciasT2.log ; cd ../..
+	cd ./3_AccesoMedio/Transparencias ; $(TEX) -jobname=TransparenciasT3 "\input{TransparenciasT3.tex}" > TransparenciasT3.log ; cd ../..
 
 Bibliografia:
 	cd ./4_Bibliografia ; $(TEX) -jobname=Bibliografía "\input{Bibliografía.tex}" > Bibliografía.log ; cd ..
@@ -26,6 +26,8 @@ clean:
 	cd ./1_TeoriaInformacion/Apuntes ; rm -f aux.tex *.out *aux *bbl *blg *log *toc *.ptb *.tod *.fls *.fdb_latexmk *.lof *.nav *.snm *.vrb *.dvi *.synctex.gz; cd ../..
 	cd ./2_CodificadoresCanal/Apuntes ; rm -f aux.tex *.out *aux *bbl *blg *log *toc *.ptb *.tod *.fls *.fdb_latexmk *.lof *.nav *.snm *.vrb *.dvi *.synctex.gz; cd ../..
 	cd ./3_AccesoMedio/Apuntes ; rm -f aux.tex *.out *aux *bbl *blg *log *toc *.ptb *.tod *.fls *.fdb_latexmk *.lof *.nav *.snm *.vrb *.dvi *.synctex.gz; cd ../..
+	cd ./2_CodificadoresCanal/Transparencias ; rm -f aux.tex *.out *aux *bbl *blg *log *toc *.ptb *.tod *.fls *.fdb_latexmk *.lof *.nav *.snm *.vrb *.dvi *.synctex.gz; cd ../..
+	cd ./3_AccesoMedio/Transparencias ; rm -f aux.tex *.out *aux *bbl *blg *log *toc *.ptb *.tod *.fls *.fdb_latexmk *.lof *.nav *.snm *.vrb *.dvi *.synctex.gz; cd ../..
 	cd ./1_TeoriaInformacion/Práctica ; rm -f aux.tex *.out *aux *bbl *blg *log *toc *.ptb *.tod *.fls *.fdb_latexmk *.lof *.nav *.snm *.vrb *.dvi *.synctex.gz; cd ../..
 	cd ./2_CodificadoresCanal/Práctica ; rm -f aux.tex *.out *aux *bbl *blg *log *toc *.ptb *.tod *.fls *.fdb_latexmk *.lof *.nav *.snm *.vrb *.dvi *.synctex.gz; cd ../..
 	cd ./3_AccesoMedio/Práctica ; rm -f aux.tex *.out *aux *bbl *blg *log *toc *.ptb *.tod *.fls *.fdb_latexmk *.lof *.nav *.snm *.vrb *.dvi *.synctex.gz; cd ../..
