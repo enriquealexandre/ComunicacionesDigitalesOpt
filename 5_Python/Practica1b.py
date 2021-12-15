@@ -30,10 +30,10 @@ N = 2048
 ###############
 fs, mensaje = wav.read(fichero_entrada)
 KB = FuncionesP1.tamanoOriginal(mensaje, 16)
-print("Tamaño del archivo sin codificar: %.1f" % KB, "KBytes")
+print(f"Tamaño del archivo sin codificar: {KB:.1f} KBytes")
 
 KB = FuncionesP1.tamanoMinimo(mensaje)
-print("Tamaño mínimo que podríamos conseguir en teoría: %.1f" % KB, "Kbytes")
+print(f"Tamaño mínimo que podríamos conseguir en teoría: {KB:.1f} Kbytes")
 
 ##################################################
 # PROCEDIMIENTO 1
@@ -46,7 +46,7 @@ diccionario_huffman = FuncionesP1.gen_huffman_dic(x_t)
 bits = CodFuente.huffman_cod(x_t, diccionario_huffman)
 
 KB = FuncionesP1.tamanoCodificado(bits)
-print("Tamaño del archivo codificado en el tiempo: %.1f" % KB, "Kbytes")
+print(f"Tamaño del archivo codificado en el tiempo: {KB:.1f} Kbytes")
 
 # Decodificación fuente
 bits_r = np.array(CodFuente.huffman_dec(bits, diccionario_huffman))
@@ -77,7 +77,7 @@ diccionario_huffman = FuncionesP1.gen_huffman_dic(x_t)
 bits = CodFuente.huffman_cod(x_t, diccionario_huffman)
 
 KB = FuncionesP1.tamanoCodificado(bits)
-print("Tamaño del archivo codificado en frecuencia: %.1f" % KB, "KBytes")
+print(f"Tamaño del archivo codificado en frecuencia: {KB:.1f} KBytes")
 
 #Decodificación fuente
 bits_r = np.array(CodFuente.huffman_dec(bits, diccionario_huffman))

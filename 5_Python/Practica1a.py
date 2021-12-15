@@ -28,11 +28,11 @@ mensaje = fichero.read()
 
 # Número de bits necesarios para transmitir el mensaje tal cual, sin codificar (asumo 8 bits por carácter)
 KB = FuncionesP1.tamanoOriginal(mensaje, 8)
-print("Tamaño del archivo: %.2f" % KB, "KBytes")
+print(f"Tamaño del archivo: {KB:.2f} KBytes")
 
 # Número mínimo de bits teórico que se necesitaría para transmitir el mensaje en condiciones óptimas:
 KB = FuncionesP1.tamanoMinimo(mensaje)
-print("Tamaño mínimo teórico: %.2f" % KB, "KBytes")
+print(f"Tamaño mínimo teórico: {KB:.2f} KBytes")
 
 #####################
 # CODIFICACIÓN FUENTE
@@ -47,7 +47,7 @@ else:   #En cualquier otro caso no utilizo codificación fuente.
     bits = ''.join(format(ord(i), '08b') for i in mensaje)
 
 KB = FuncionesP1.tamanoCodificado(bits)
-print("Tamaño del archivo tras la codificación fuente (", codigo_fuente, "): %.2f" % KB, "KBytes")
+print(f"Tamaño del archivo tras la codificación fuente ({codigo_fuente}): {KB:.2f} KBytes")
 
 
 #######################

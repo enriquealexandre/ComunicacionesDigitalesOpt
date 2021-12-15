@@ -31,7 +31,7 @@ mensaje = fichero.read()
 
 # Número de bits necesarios para transmitir el mensaje tal cual, sin codificar (asumo 8 bits por carácter)
 KB = FuncionesP1.tamanoOriginal(mensaje,8)
-print("Tamaño del archivo: %.1f" % KB, "KBytes")
+print(f"Tamaño del archivo: {KB:.2f} KBytes")
 
 #Convierto el mensaje de texto a formato binario
 bits_fuente = ''.join(format(ord(i), '08b') for i in mensaje)
@@ -49,7 +49,7 @@ else:   #En cualquier otro caso no utilizo codificación de canal
     bits_canal = bits_fuente
 
 KB = FuncionesP1.tamanoCodificado(bits_canal)
-print("Tamaño del archivo tras la codificación de canal (", codigo_canal, "): %.1f" % KB, "KBytes")
+print(f"Tamaño del archivo tras la codificación de canal ({codigo_canal}): {KB:.1f} KBytes")
 
 ############
 # MODULACIÓN
@@ -71,23 +71,23 @@ bits_rx = "".join(["0" if i<0.5 else "1" for i in senal_rx])
 
 #Cuento el número de bits erróneos recibidos
 errores = FuncionesP2.numErrores(bits_canal, bits_rx)
-print("Número de bits erroneos recibidos: ", errores)
+print(f"Número de bits erroneos recibidos: {errores}")
 
 #########################
 # DECODIFICACIÓN DE CANAL
 #########################
 if codigo_canal == "repeticion":
     bits_rx_canal = FuncionesP2.repeticion_dec(bits_rx,k)
+    errores = FuncionesP2.numErrores(bits_fuente, bits_rx_canal)
 elif codigo_canal == "paridad":
-    bits_rx_canal = CodCanal.paridad_dec(bits_rx,n,False)
+    errores,bits_rx_canal = CodCanal.paridad_dec(bits_rx,n)
 elif codigo_canal == "hamming":
     bits_rx_canal = CodCanal.hamming_dec(bits_rx, q)
+    errores = FuncionesP2.numErrores(bits_fuente, bits_rx_canal)
 else:
     bits_rx_canal = bits_rx
 
-#Ahora cuento los bits erróneos tras la corrección de errores
-errores = FuncionesP2.numErrores(bits_fuente, bits_rx_canal)
-print("Número de bits erróneos tras la corrección de errores:", errores)
+print(f"Número de bits erróneos tras la corrección de errores: {errores}")
 
 #Convierto los bits recibidos a texto
 salida = ""

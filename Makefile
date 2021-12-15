@@ -9,9 +9,9 @@ Apuntes:
 	cd ./3_AccesoMedio/Apuntes ; $(TEX) -jobname=ApuntesT3 "\input{ApuntesT3.tex}" > ApuntesT3.log ; cd ../..
 
 Practicas:
-	cd ./1_TeoriaInformacion/Práctica ; $(TEX) -jobname=Práctica1 "\input{Práctica1.tex}" > Práctica1.log ; cd ../..
-	cd ./2_CodificadoresCanal/Práctica ; $(TEX) -jobname=Práctica2 "\input{Práctica2.tex}" > Práctica2.log ; cd ../..
-	cd ./3_AccesoMedio/Práctica ; $(TEX) -jobname=Práctica3 "\input{Práctica3.tex}" > Práctica3.log ; cd ../..
+	cd ./1_TeoriaInformacion/Práctica ; $(TEX) -jobname=_Guión1 "\input{_Guión1.tex}" > _Guión1.log ; cd ../..
+	cd ./2_CodificadoresCanal/Práctica ; $(TEX) -jobname=_Guión2 "\input{_Guión2.tex}" > _Guión2.log ; cd ../..
+	cd ./3_AccesoMedio/Práctica ; $(TEX) -jobname=_Guión3 "\input{_Guión3.tex}" > _Guión3.log ; cd ../..
 
 Transparencias:
 	cd ./2_CodificadoresCanal/Transparencias ; $(TEX) -jobname=TransparenciasT2 "\input{TransparenciasT2.tex}" > TransparenciasT2.log ; cd ../..

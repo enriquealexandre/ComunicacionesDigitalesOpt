@@ -129,7 +129,7 @@ else:   #Por defecto considero una 2-ASK
 if codigo_canal == "repeticion":
     bits_rx_canal = FuncionesP2.repeticion_dec(bits_rx,k)
 elif codigo_canal == "paridad":
-    bits_rx_canal = CodCanal.paridad_dec(bits_rx,n,False)
+    errores,bits_rx_canal = CodCanal.paridad_dec(bits_rx,n)
 elif codigo_canal == "hamming":
     bits_rx_canal = CodCanal.hamming_dec(bits_rx, q)
 else:

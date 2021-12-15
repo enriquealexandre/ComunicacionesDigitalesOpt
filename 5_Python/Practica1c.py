@@ -39,7 +39,7 @@ Q = np.array([  [16, 11, 10, 16, 24, 40, 51, 61],
 #Reescalo la matriz de cuantificación según el factor de calidad
 Q = Q*factor_calidad    
 KB = FuncionesP1.tamanoOriginal(img,8)
-print("Tamaño de la imagen sin codificar: %.1f" % KB, "KBytes")
+print(f"Tamaño de la imagen sin codificar: {KB:.2f} KBytes")
 
 #Paso 1: Calculo la transformada DCT de cada bloque de 8x8 píxeles
 img_DCT = np.zeros(img.shape, dtype=float)
@@ -68,7 +68,7 @@ for x in range(0,img.shape[0]):
         bits += codigo[pixel]
 
 KB = FuncionesP1.tamanoCodificado(bits)
-print("Tamaño de la imagen JPEG: %.1f" % KB, "KBytes")
+print(f"Tamaño de la imagen JPEG: {KB:.2f} KBytes")
 
 #Paso 4: Cuantificación inversa
 img_IQ = np.zeros(img.shape, dtype=float)
