@@ -16,9 +16,8 @@ from collections import Counter
 #   H: Valor de la entropía (Float) 
 ##########################################################################
 def entropia(datos):
-    probabilidades,codigos = gen_huffman_dic(datos)
-    p = list(probabilidades.values())
-    H = sum([-k*np.log2(k) for k in p])
+    print("¡OJO!  HAY QUE IMPLEMENTAR LA FUNCION entropia")
+    H = 0
     return H
 
 
@@ -75,9 +74,8 @@ def gen_huffman_dic(datos):
 #   bits: Mensaje codificado en binario (string)
 ##########################################################################
 def huffman_cod(mensaje,codigos):
+    print("¡OJO! HAY QUE IMPLEMENTAR LA FUNCIÓN huffman_cod")
     bits = ""
-    for letra in mensaje:
-        bits += codigos[letra]
     return bits
 
 ##########################################################################
