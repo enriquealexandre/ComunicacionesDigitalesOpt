@@ -27,10 +27,10 @@ La práctica se dividirá a su vez en cuatro subprácticas que se incluyen en lo
 Además, se incluye un archivo Python, \texttt{CodFuente.py}, con una serie de funciones relacionadas con la codificación fuente:
 \begin{itemize}
 	\item {\bf entropia}
-	\item {\bf gen_huffman_dic}
+	\item {\bf gen\_huffman\_dic}
 	\item {\bf huffman\_cod}
 	\item {\bf huffman\_dec}
-	\item {\bf gen_lzw_dic}
+	\item {\bf gen\_lzw\_dic}
 	\item {\bf lzw\_cod}
 	\item {\bf lzw\_dec}
 \end{itemize}
@@ -73,8 +73,8 @@ La idea es muy simple. Previamente a la codificación Huffman, lo que se hace es
 Nosotros vamos a hacer algo mucho más sencillo, pero que permite observar el funcionamiento de un sistema de este tipo. En el archivo \texttt{Practica1c.ipynb} se realiza la codificación de un archivo de audio de dos formas distintas:
 
 \begin{itemize}
-	\item {\bf En el dominio del tiempo}: Esto no es lo habitual (de hecho nunca se hace así), pero como primera aproximación lo que hacemos es simplemente recuantificar el archivo original, aplicarle un codificador Huffman y deshacer todo el proceso en recepción. Podéis observar el resultado final en el archivo \emph{salida_tiempo.wav}.
-	\item {\bf En el dominio de la frecuencia}: En este caso lo que se hace es dividir el fichero de audio en tramas de N muestras, y para cada una de ellas se calcula una transformada al dominio de la frecuencia (usamos una transformada del coseno, DCT, en lugar de una transformada de Fourier porque devuelve valores reales, lo que facilita el trabajo). Una vez en el dominio de la frecuencia, se recuantifica cada una de las tramas, se le aplica un codificador Huffman, y el receptor deshace todo el proceso. La razón de trabajar de esta manera es que el proceso de enmascaramiento del oído humano también funciona en el domino de la frecuencia, por lo que al trabajar en este dominio podemos ajustar mucho mejor el funcionamiento del codificador a las características del sonido. En este caso podéis ver la salida del codificador en el archivo \emph{salida_frecuencia.wav}.
+	\item {\bf En el dominio del tiempo}: Esto no es lo habitual (de hecho nunca se hace así), pero como primera aproximación lo que hacemos es simplemente recuantificar el archivo original, aplicarle un codificador Huffman y deshacer todo el proceso en recepción. Podéis observar el resultado final en el archivo \emph{salida\_tiempo.wav}.
+	\item {\bf En el dominio de la frecuencia}: En este caso lo que se hace es dividir el fichero de audio en tramas de N muestras, y para cada una de ellas se calcula una transformada al dominio de la frecuencia (usamos una transformada del coseno, DCT, en lugar de una transformada de Fourier porque devuelve valores reales, lo que facilita el trabajo). Una vez en el dominio de la frecuencia, se recuantifica cada una de las tramas, se le aplica un codificador Huffman, y el receptor deshace todo el proceso. La razón de trabajar de esta manera es que el proceso de enmascaramiento del oído humano también funciona en el domino de la frecuencia, por lo que al trabajar en este dominio podemos ajustar mucho mejor el funcionamiento del codificador a las características del sonido. En este caso podéis ver la salida del codificador en el archivo \emph{salida\_frecuencia.wav}.
 \end{itemize}
 
 
