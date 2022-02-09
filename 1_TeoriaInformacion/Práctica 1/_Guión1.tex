@@ -104,6 +104,10 @@ Calcular la eficiencia de este código. ¿Qué debe ocurrir para que un código 
 	\item Decodificar el mensaje decodificado, comprobando que se obtiene de nuevo el mensaje original.
 \end{itemize}
 
+
+\end{enumerate}
+
+
 \section{Pistas}
 \begin{itemize}
 	\item Para la codificación Huffman, es muy cómodo trabajar con números enteros, y en el último momento traducirlos a binario con la función \texttt{dec2bin}. Añadir un 0 a la derecha de un número binario no es más que multiplicarlo por dos en decimal, y añadir un 1, multiplicar por 2 y sumar 1.
@@ -113,49 +117,6 @@ Calcular la eficiencia de este código. ¿Qué debe ocurrir para que un código 
 \end{itemize}
 
 
-\section{Codificación de un fichero de imagen}
-
-Este apartado tiene como idea complementar lo ya hecho anteriormente con un ejemplo de aplicación real como es la codificación de imágenes. En concreto vamos a pensar en una versión muy simplificada de un codificador JPEG. 
-
-JPEG se enmarca dentro de lo que se conocen como codificadores con pérdidas. Esto quiere decir que la imagen original nunca se va a poder volver a reconstruir a partir de la imagen en formato JPEG, ya que hay partes de la información que se van a eliminar. Esta información se elimina de forma que su impacto visual sobre la imagen sea el menor posible, de forma que, si todo va bien, la imagen JPEG y la imagen original sean prácticamente idénticas. 
-
-Para conseguir todo esto, el algoritmo JPEG hace lo siguiente con la imagen (vamos a pensar por simplicidad que tenemos una imagen en escala de grises):
-
-\begin{enumerate}
-\item Antes de nada, convertimos los valores de cada pixel de la imagen de formato \emph{entero sin signo} a \emph{entero con signo}. Para un caso como el que vamos a considerar, en el que la imagen viene codificada con 8 bits por muestra, esto implica simplemente restarle $2^7 = 128$ a cada muestra, de forma que los valores pasan de $[0, 255]$ a $[-128, 127]$.
-\item Ahora procesamos la imagen en bloques de 8x8 píxeles.
-\item Se calcula la Transformada del Coseno (DCT) para cada bloque. La DCT es una variante de la transformada de Fourier en la que las funciones base en lugar de ser exponenciales complejas son cosenos. Esto tiene algunas limitaciones que no vienen al caso, pero también tiene una gran ventaja, y es que los valores de la DCT son reales, por lo que reducimos a la mitad la información a codificar con respecto a una DFT normal.
-\item Se cuantifica el bloque transformado utilizando una matriz de cuantificación. El estándar propone una, aunque luego cada fabricante puede utilizar una propia. Si llamamos $Q$ a la matriz de cuantificación y $X$ al bloque obtenido tras la DCT, el proceso es simplemente:
-\begin{equation}
-	X_q = Round \left ( \frac{X}{Q} \right )
-\end{equation}
-\item Se aplica un proceso de codificación Huffman a la señal cuantificada
-\end{enumerate}
-
-Una vez en el decodificador, se siguen los pasos inversos para cada bloque:
-
-\begin{enumerate}
-\item Hacemos la cuantificación inversa:
-\begin{equation}
-	X_R = X_q \cdot Q
-\end{equation}
-\item Calculamos la transformada inversa del coseno (IDCT).
-\end{enumerate}
-
-En \url{https://github.com/enriquealexandre/ComunicacionesDigitales}, podéis encontrar un par de funciones (jpegCod.m y jpegDec.m) que realizan los pasos anteriores (salvo la codificación Huffman), así como una imagen para hacer pruebas. El código utiliza la matriz de cuantificación estándar propuesta en el estándar JPEG, pero se puede jugar aumentando los valores para conseguir una imagen con menor calidad. 
-
-Os propongo que hagáis lo siguiente:
-
-\begin{enumerate}
-	\item Calcular cuántos bits serían necesarios para codificar la imagen JPEG a la salida del codificador utilizando un número de bits fijo por pixel. 
-	\item Generar un código Huffman adecuado para la imagen.
-	\item Calcular la ganancia de codificación con ese esquema.
-\end{enumerate}
-
-Por si queréis investigar un poco más, en realidad el proceso es algo más complejo, ya que se codifica de forma separada el primer pixel de cada bloque de 8x8 (que tiene un valor muy superior al resto de píxeles del bloque)\footnote{Si accedéis desde la UAH, o con VPN, podéis echarle un ojo a este tutorial para haceros una idea: \url{https://ieeexplore.ieee.org/document/125072}}. El valor de estos píxeles iniciales de cada bloque se codifica de forma diferencial con el del anterior bloque, ahorrando así algún bit extra, y el resto de los píxeles sí que se codifican utilizando un código Huffman, ordenando los valores siguiendo un patron en diagonal.
-
-
-
 
 \section{¿Qué entregar?}
 \begin{itemize}
@@ -163,7 +124,6 @@ Por si queréis investigar un poco más, en realidad el proceso es algo más com
 \end{itemize}
 
 
-\end{enumerate}
 
 
 \end{document}
