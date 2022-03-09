@@ -2,4 +2,6 @@
 *.fig
 *.eps
 .DS*
+*.aux
+*.log
 __pycache__
