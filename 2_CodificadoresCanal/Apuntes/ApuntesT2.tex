@@ -493,6 +493,237 @@ A partir de lo visto podemos extraer las siguientes conclusiones:
 	\item El uso de un {\bf decodificador blando} nos va a permitir ``evitar'' los errores, aumentando la distancia mínima del código con respecto a la de la constelación empleada.
 \end{itemize}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Códigos convolucionales}\index{Código convolucional}\index{Convolucional, Código}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Los códigos convolucionales se diferencian de los códigos bloque lineales que hemos estado viendo hasta ahora en que tienen memoria, y su salida se calcula mediante a una operación que recuerda a una convolución. 
+
+Para entender mejor su funcionamiento vamos a utilizar el ejemplo mostrado en la Figura \ref{fig:CodificadorConvolucional}.
+
+
+%El bloque básico de un codificador convolucional es el registro de desplazamiento, mostrado en la Figura \ref{fig:RegistroDesplazamiento}. Cada una de las ganancias $g_i$ representa un cortocircuito o un circuito abierto, y los bits del registro se combinan mediante suma módulo 2 para obtener los bits codificados a la salida:
+%
+%\begin{figure*}
+%	\label{fig:RegistroDesplazamiento}
+%	\centering\includegraphics[width=10cm]{RegistroDesplazamiento}
+%		\caption{Esquema de un registro de desplazamiento utilizado en los códigos convolucionales.}	
+%\end{figure*}
+%
+%\begin{displaymath}
+%	x_j = m_{j-L} g_L \oplus \cdots m_{j-1}g_1 \oplus m_j g_0 
+%\end{displaymath}
+%
+%Si nos fijamos, vemos que el bit $x_j$ depende no sólo del bit actual, $m_j$ sino también de los $L$ bits del mensaje anteriores. 
+%
+%Con el registro de desplazamiento tal cual lo hemos representado, estamos obteniendo bits a la salida al mismo ritmo que entran los bits a la entrada. No se trata, por tanto, de un codificador, ya que no se introducen bits extra que puedan servir para el control de errores. 
+%
+%Para conseguirlo, lo que haremos será añadir más sumadores módulo 2 a la salida, tal y como se muestra por ejemplo en la Figura \ref{fig:CodificadorConvolucional}.
+
+Como se puede observar, el codificador consta de un registro de desplazamiento con dos retardos. Cada nuevo bit introducido a la entrada del codificador, $m_j$, se combina con los dos bits anteriores almacenados en el registro, $m_{j-1}$ y $m_{j-2}$ para formar dos bits codificados que constituirán la salida del codificador, $x'_j$ y $x''_j$. 
+
+\begin{figure*}[h!]
+	\centering\includegraphics[width=10cm]{./Figuras/CodificadorConvolucional}
+	\caption{Esquema de un codificador convolucional con $n=2$, $k=1$ y $L=2$.}	
+	\label{fig:CodificadorConvolucional}
+\end{figure*}
+
+
+A partir de la figura podemos ver que los bits que se generan a la salida responden a la siguiente expresión:
+
+\begin{displaymath}
+	\begin{array}{l}
+		x'_j = m_j \oplus m_{j-2} \\
+		x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} \\
+	\end{array}
+\end{displaymath}
+
+
+Estos bits finalmente se intercalan entre sí para obtener la trama binaria de salida:
+
+\begin{displaymath}
+	\mathbf{x} = (x'_1 \,\, x''_1 \,\, x'_2 \,\, x''_2 \,\, x'_3 \,\, x''_3 \,\, \cdots )
+\end{displaymath}
+
+Podemos ver que se trata de un codificador con una tasa de codificación $R_c = 1/2$, ya que por cada bit a la entrada ($k=1$) se obtienen dos bits a la salida ($n=2$). Además, al número de retardos que introduce el sistema, en nuestro caso $L=2$ se le denomina {\bf memoria} del codificador. 
+
+El ejemplo mostrado, por tanto, se corresponde con un código convolucional $(n,k,L)$ con $n=2$, $k=1$ y $L=2$.
+
+Si suponemos un estado inicial en el que todos los registros estén a cero ($m_{j-1} = m_{j-2} = \mathtt{0}$) podemos a partir de ahí intentar representar todos los posibles estados del codificador en función de las posibles entradas y obtener así una representación en forma de árbol como la mostrada en la Figura \ref{fig:ArbolCodigoConvolucional}\index{Diagrama de árbol}. 
+
+\begin{figure*}
+	\centering\includegraphics[width=5cm]{./Figuras/ArbolCodigoConvolucional}
+		\caption{Diagrama de árbol para el código convolucional $(2,1,2)$ del ejemplo.}	
+		\label{fig:ArbolCodigoConvolucional}
+\end{figure*}
+
+El codificador podrá estar en cuatro estados distintos, marcados por los valores de los bits almacenados en el registro: $(m_{j-2}, m_{j-1})$. Por claridad, denominamos a los estados por letras: $a=\mathtt{00}$, $b=\mathtt{01}$, $c=\mathtt{10}$ y $d=\mathtt{11}$. Si, por ejemplo, el codificador se encuentra inicialmente en el estado $a$ (\bits{00}) y el bit a la entrada es $m_j = 1$, el nuevo estado del codificador será el $b$ (\bits{01}). En la Figura \ref{fig:ExplicacionEstado} se muestra este caso y la evolución si la secuencia a la entrada es \bits{1101}.
+
+\begin{figure*}
+	\centering\includegraphics[width=5cm]{./Figuras/ExplicacionEstado}
+		\caption{Evolución de los estados en un codificador convolucional.}	
+	\label{fig:ExplicacionEstado}
+\end{figure*}
+
+Además de mostrar las transiciones entre estados del codificador, el diagrama de árbol también nos muestra la salida del codificador cuando se pasa de un estado a otro. 
+
+Así, por ejemplo, si partimos como antes del estado \bits{00} y el bit de entrada al codificador es $m_j = \mathtt{0}$, entonces la salida será:
+
+\begin{displaymath}
+\begin{array}{l}
+	x'_j = m_j \oplus m_{j-2} = \mathtt{0} \oplus \mathtt{0} = \mathtt{0}\\
+	x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} = \mathtt{0} \oplus \mathtt{0} \oplus \mathtt{0} = \mathtt{0}
+\end{array}
+\end{displaymath}
+
+
+La salida será por tanto $(x'_j x''_j) = (\mathtt{0\, 0})$. Por otra parte, si la entrada fuese $m_j = \mathtt{1}$, entonces:
+
+\begin{displaymath}
+\begin{array}{l}
+	x'_j = m_j \oplus m_{j-2} = \mathtt{1} \oplus \mathtt{0} = \mathtt{1} \\
+	x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} = \mathtt{1} \oplus \mathtt{0} \oplus \mathtt{0} = \mathtt{1}
+\end{array}
+\end{displaymath}
+
+
+En este caso la salida es $(x'_j x''_j) = (\mathtt{1\, 1})$. Es decir, del estado $a$ se puede pasar al estado $a$ de nuevo si la entrada es \bits{0} (produciendo una salida $\mathtt{0 \, 0}$) o bien al estado $b$, si la entrada es \bits{1} (siendo en este caso la salida $\mathtt{1 \, 1}$).
+
+Esto es lo que podemos ver representado en el árbol de codificador. Si ahora suponemos que estamos en el estado $d = \mathtt{11}$ y que la entrada es $\mathtt{0}$, entonces ahora tendremos:
+
+\begin{displaymath}
+\begin{array}{l}
+	x'_j = m_j \oplus m_{j-2} = \mathtt{0} \oplus \mathtt{1} = \mathtt{1}\\
+	x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} = \mathtt{0} \oplus \mathtt{1} \oplus \mathtt{1} = \mathtt{0}
+\end{array}
+\end{displaymath}
+
+
+Habremos pasado del estado $d=\mathtt{1\, 1}$ al $c=\mathtt{1\, 0}$ produciendo una salida igual a $\mathtt{1 \, 0}$. Siguiendo este mismo proceso podemos ir construyendo todas las ramas del árbol, y si nos damos cuenta a partir de un determinado momento se va a ir repitiendo, dado que el codificador sólo cuenta con dos retardos, y por tanto la salida nunca va a depender de más de 2 bits anteriores al actual.
+
+
+Una forma más compacta de representar todas las posibles transiciones entre estados en un codificador convolucional es mediante un diagrama de rejilla\index{Diagrama de rejilla} o un diagrama de estados\index{Diagrama de estados}, tal y como se muestra en la figura \ref{fig:RejillayEstadosCodigoConvolucional}. 
+
+
+\begin{figure*}
+	\centering
+	\subfigure{\label{fig:RejillaCodigoConvolucional}\centering\includegraphics[width=6cm]{./Figuras/RejillaCodigoConvolucional2}}
+	\subfigure{\label{fig:EstadosCodigoConvolucional}\centering\includegraphics[width=6cm]{./Figuras/EstadosCodigoConvolucional}}
+		\caption{Diagrama de rejilla \subref{fig:RejillaCodigoConvolucional} y diagrama de estados \subref{fig:EstadosCodigoConvolucional} para el código convolucional $(2,1,2)$ del ejemplo.}	
+		\label{fig:RejillayEstadosCodigoConvolucional}
+\end{figure*}
+
+Ambas representaciones muestran esencialmente lo mismo: las distintas transiciones posibles entre los estados del codificador y los bits que se obtienen a la salida para cada una de estas transiciones.
+
+Una última forma de analizar este tipo de códigos es haciendo uso de polinomios en $D$ ($D$ representa un retardo unidad, equivalente a la $z^{-1}$ de la Transformada Z). Así, utilizando esta notación, nuestro codificador de ejemplo se podría representar mediante los siguientes polinomios generadores\index{Polinomio generador}:
+
+\begin{displaymath}
+\begin{array}{l}
+	G_1(D) = 1 + D^2\\
+	G_2(D) = 1 + D^1 + D^2
+\end{array}
+\end{displaymath}
+
+
+Esta representación nos permite obtener de forma muy sencilla la salida del codificador a cualquier secuencia binaria de entrada. Si, por ejemplo, tuviésemos a la entrada la secuencia $\mathtt{110111001000}$, que puede escribirse de forma polinomial como $1 + D + D^3 + D^4 + D^5 + D^8$, la salida vendrá dada por:
+
+\begin{displaymath}
+	\begin{array}{ll}
+	X'_j(D) & = M(D) G_1(D) = (1 + D + D^3 + D^4 + D^5 + D^8) (1 + D^2) = \\
+			& = 1 + D + D^2 + D^4 + D^6 + D^7 + D^8 + D^{10} = \mathtt{11101011101}
+	\end{array}
+\end{displaymath}
+
+\begin{displaymath}
+	\begin{array}{ll}
+	X''_j(D) & = M(D) G_2(D) = (1 + D + D^3 + D^4 + D^5 + D^8) (1 + D^1 + D^2) = \\
+			& = 1 + D^5 + D^7 + D^8 + D^9 + D^{10} = \mathtt{10000101111}
+	\end{array}
+\end{displaymath}
+
+Finalmente, la salida se obtiene intercalando los bits anteriores:
+
+\begin{displaymath}
+	x_j = \mathtt{11\, 10\, 10\, 00\, 10\, 01\, 10\, 11\, 11\, 01\, 11}
+\end{displaymath}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Decodificación. Algoritmo de Viterbi}\index{Viterbi, Algoritmo de}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Existen varias formas de decodificar una secuencia binaria obtenida con un codificador convolucional. Nosotros no obstante nos vamos a centrar en estudiar el algoritmo de Viterbi, que permite implementar un receptor de máxima verosimilitud aunque a costa de un gran consumo de memoria por parte del decodificador. 
+
+Vamos a seguir con nuestro codificador de ejemplo, que recordamos venía dado por las siguientes expresiones:
+
+\begin{displaymath}
+	\begin{array}{l}
+		x'_j = m_j \oplus m_{j-2} \\
+		x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} \\
+	\end{array}
+\end{displaymath}
+
+Vamos a suponer que partimos del estado inicial $a=\mathtt{00}$ y que también terminamos en ese mismo estado (para ello basta con añadir dos ceros al final de la secuencia recibida). Supongamos también que la secuencia transmitida es $\mathtt{11010100}$ (ya hemos incluido los dos ceros al final para asegurar que el último estado sea el \bits{00}. La salida del codificador para esta secuencia de entrada es: $\mathtt{11\,10\,10\, 00\, 01 \, 00 \, 01 \, 11}$. 
+
+Supondremos por último que el canal es ideal, y que por tanto la secuencia recibida es exactamente igual a la transmitida, sin errores. 
+
+En la Figura \ref{fig:Viterbi_1} se muestran las dos primeras iteraciones del algoritmo. La secuencia de entrada se muestra en la parte inferior, y en el interior de cada nodo se muestra la distancia Hamming acumulada hasta ese punto. Partiendo del estado \bits{00} existen dos opciones: 
+
+\begin{itemize}
+	\item Ir al estado $b = \mathtt{01}$, con lo que la salida del codificador sería \bits{11}, tal y como indicamos junto a la flecha de la transición. En este caso la distancia Hamming entre esta salida (\bits{11}) y la entrada al codificador (\bits{11}) será cero. 
+	\item Continuar en el estado $a = \mathtt{00}$, siendo en este caso la salida del codificador \bits{00}. La distancia Hamming entre la salida (\bits{00}) y la entrada (\bits{11}) es de dos. 
+\end{itemize}
+
+En la segunda iteración repetimos el proceso, partiendo de los dos nodos que tenemos ahora ``activos''. Tenemos cuatro opciones:
+
+\begin{itemize}
+	\item Pasar del estado $a$ al $a$, sumando uno a la distancia Hamming acumulada, con lo que ahora sería de tres. 
+	\item Pasar del estado $a$ al $b$, obteniendo una distancia acumulada de tres.
+	\item Pasar del estado $b$ al $c$, que supone añadir dos a la distancia acumulada hasta entonces.
+	\item Pasar del estado $b$ al $d$, que suma cero a la distancia acumulada, manteniéndose ésta en este valor, por tanto. 
+\end{itemize}
+
+
+\begin{figure*}
+		\centering\includegraphics[width=10cm]{./Figuras/Viterbi_1}
+		\caption{Primeras dos iteraciones del algoritmo de Viterbi.}	
+		\label{fig:Viterbi_1}
+	\end{figure*}
+
+Llegamos ahora a la tercera iteración, mostrada en la Figura \ref{fig:Viterbi_2}. El proceso es idéntico al que hemos seguido hasta ahora, aunque ahora nos encontramos con que a cada estado podemos llegar desde dos estados distintos. Por ejemplo, al estado $d$ se puede llegar desde el propio estado $d$, añadiendo dos a la distancia acumulada, que totalizaría dos, o bien desde el estado $b$, siendo en este caso la distancia acumulada igual a tres (tres del estado anterior más cero debido a esta transición). Lo que haremos en este caso es descartar aquel camino con una mayor distancia acumulada (el que viene del nodo $b$, y que está marcado con línea de puntos en la figura), dejando únicamente ``vivo'' el camino con menor distancia Hamming acumulada. 
+
+
+\begin{figure*}
+	\centering\includegraphics[width=10cm]{./Figuras/Viterbi_2}
+		\caption{Tercera iteración del algoritmo de Viterbi.}	
+		\label{fig:Viterbi_2}
+\end{figure*}
+
+En la figura \ref{fig:Viterbi_3} se muestra cómo quedaría el diagrama una vez que hayamos eliminado los caminos con mayor distancia acumulada en cada uno de los nodos. 
+
+\begin{figure*}
+	\centering\includegraphics[width=10cm]{./Figuras/Viterbi_3}
+		\caption{tercera iteración del algoritmo de Viterbi, tras eliminar los caminos con mayor distancia Hamming acumulada.}	
+		\label{fig:Viterbi_3}
+\end{figure*}
+
+
+En la Figura \ref{fig:Viterbi_4} se muestra la siguiente iteración del algoritmo, con los caminos con mayor distancia acumulada marcados con línea discontinua. 
+
+\begin{figure*}
+	\centering\includegraphics[width=10cm]{./Figuras/Viterbi_4}
+		\caption{Cuarta iteración del algoritmo de Viterbi.}	
+		\label{fig:Viterbi_4}
+\end{figure*}
+
+Por último, en la figura \ref{fig:Viterbi_5} se muestra el estado final del algoritmo, una vez que hemos llegado al último estado. El camino con menor distancia Hamming acumulada se ha destacado en línea más gruesa. Podemos comprobar que la salida del sistema para este camino coincide de forma exacta con la entrada, algo que no nos debería sorprender, pues hemos supuesto que no ha habido ningún error en la transmisión. 
+
+\begin{figure*}
+	\centering\includegraphics[width=10cm]{./Figuras/Viterbi_5}
+		\caption{Resultado final del algoritmo de Viterbi.}	
+		\label{fig:Viterbi_5}
+\end{figure*}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Códigos cíclicos}\index{Códigos cíclicos}\index{Cíclicos, Códigos}
@@ -747,238 +978,6 @@ El proceso consta de los siguientes pasos:
 	 
 \end{enumerate}
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Códigos convolucionales}\index{Código convolucional}\index{Convolucional, Código}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Los códigos convolucionales se diferencian de los códigos bloque lineales que hemos estado viendo hasta ahora en que tienen memoria, y su salida se calcula mediante a una operación que recuerda a una convolución. 
-
-Para entender mejor su funcionamiento vamos a utilizar el ejemplo mostrado en la Figura \ref{fig:CodificadorConvolucional}.
-
-
-%El bloque básico de un codificador convolucional es el registro de desplazamiento, mostrado en la Figura \ref{fig:RegistroDesplazamiento}. Cada una de las ganancias $g_i$ representa un cortocircuito o un circuito abierto, y los bits del registro se combinan mediante suma módulo 2 para obtener los bits codificados a la salida:
-%
-%\begin{figure*}
-%	\label{fig:RegistroDesplazamiento}
-%	\centering\includegraphics[width=10cm]{RegistroDesplazamiento}
-%		\caption{Esquema de un registro de desplazamiento utilizado en los códigos convolucionales.}	
-%\end{figure*}
-%
-%\begin{displaymath}
-%	x_j = m_{j-L} g_L \oplus \cdots m_{j-1}g_1 \oplus m_j g_0 
-%\end{displaymath}
-%
-%Si nos fijamos, vemos que el bit $x_j$ depende no sólo del bit actual, $m_j$ sino también de los $L$ bits del mensaje anteriores. 
-%
-%Con el registro de desplazamiento tal cual lo hemos representado, estamos obteniendo bits a la salida al mismo ritmo que entran los bits a la entrada. No se trata, por tanto, de un codificador, ya que no se introducen bits extra que puedan servir para el control de errores. 
-%
-%Para conseguirlo, lo que haremos será añadir más sumadores módulo 2 a la salida, tal y como se muestra por ejemplo en la Figura \ref{fig:CodificadorConvolucional}.
-
-Como se puede observar, el codificador consta de un registro de desplazamiento con dos retardos. Cada nuevo bit introducido a la entrada del codificador, $m_j$, se combina con los dos bits anteriores almacenados en el registro, $m_{j-1}$ y $m_{j-2}$ para formar dos bits codificados que constituirán la salida del codificador, $x'_j$ y $x''_j$. 
-
-\begin{figure*}[h!]
-	\centering\includegraphics[width=10cm]{./Figuras/CodificadorConvolucional}
-	\caption{Esquema de un codificador convolucional con $n=2$, $k=1$ y $L=2$.}	
-	\label{fig:CodificadorConvolucional}
-\end{figure*}
-
-
-A partir de la figura podemos ver que los bits que se generan a la salida responden a la siguiente expresión:
-
-\begin{displaymath}
-	\begin{array}{l}
-		x'_j = m_j \oplus m_{j-2} \\
-		x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} \\
-	\end{array}
-\end{displaymath}
-
-
-Estos bits finalmente se intercalan entre sí para obtener la trama binaria de salida:
-
-\begin{displaymath}
-	\mathbf{x} = (x'_1 \,\, x''_1 \,\, x'_2 \,\, x''_2 \,\, x'_3 \,\, x''_3 \,\, \cdots )
-\end{displaymath}
-
-Podemos ver que se trata de un codificador con una tasa de codificación $R_c = 1/2$, ya que por cada bit a la entrada ($k=1$) se obtienen dos bits a la salida ($n=2$). Además, al número de retardos que introduce el sistema, en nuestro caso $L=2$ se le denomina {\bf memoria} del codificador. 
-
-El ejemplo mostrado, por tanto, se corresponde con un código convolucional $(n,k,L)$ con $n=2$, $k=1$ y $L=2$.
-
-Si suponemos un estado inicial en el que todos los registros estén a cero ($m_{j-1} = m_{j-2} = \mathtt{0}$) podemos a partir de ahí intentar representar todos los posibles estados del codificador en función de las posibles entradas y obtener así una representación en forma de árbol como la mostrada en la Figura \ref{fig:ArbolCodigoConvolucional}\index{Diagrama de árbol}. 
-
-\begin{figure*}
-	\centering\includegraphics[width=5cm]{./Figuras/ArbolCodigoConvolucional}
-		\caption{Diagrama de árbol para el código convolucional $(2,1,2)$ del ejemplo.}	
-		\label{fig:ArbolCodigoConvolucional}
-\end{figure*}
-
-El codificador podrá estar en cuatro estados distintos, marcados por los valores de los bits almacenados en el registro: $(m_{j-2}, m_{j-1})$. Por claridad, denominamos a los estados por letras: $a=\mathtt{00}$, $b=\mathtt{01}$, $c=\mathtt{10}$ y $d=\mathtt{11}$. Si, por ejemplo, el codificador se encuentra inicialmente en el estado $a$ (\bits{00}) y el bit a la entrada es $m_j = 1$, el nuevo estado del codificador será el $b$ (\bits{01}). En la Figura \ref{fig:ExplicacionEstado} se muestra este caso y la evolución si la secuencia a la entrada es \bits{1101}.
-
-\begin{figure*}
-	\centering\includegraphics[width=5cm]{./Figuras/ExplicacionEstado}
-		\caption{Evolución de los estados en un codificador convolucional.}	
-	\label{fig:ExplicacionEstado}
-\end{figure*}
-
-Además de mostrar las transiciones entre estados del codificador, el diagrama de árbol también nos muestra la salida del codificador cuando se pasa de un estado a otro. 
-
-Así, por ejemplo, si partimos como antes del estado \bits{00} y el bit de entrada al codificador es $m_j = \mathtt{0}$, entonces la salida será:
-
-\begin{displaymath}
-\begin{array}{l}
-	x'_j = m_j \oplus m_{j-2} = \mathtt{0} \oplus \mathtt{0} = \mathtt{0}\\
-	x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} = \mathtt{0} \oplus \mathtt{0} \oplus \mathtt{0} = \mathtt{0}
-\end{array}
-\end{displaymath}
-
-
-La salida será por tanto $(x'_j x''_j) = (\mathtt{0\, 0})$. Por otra parte, si la entrada fuese $m_j = \mathtt{1}$, entonces:
-
-\begin{displaymath}
-\begin{array}{l}
-	x'_j = m_j \oplus m_{j-2} = \mathtt{1} \oplus \mathtt{0} = \mathtt{1} \\
-	x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} = \mathtt{1} \oplus \mathtt{0} \oplus \mathtt{0} = \mathtt{1}
-\end{array}
-\end{displaymath}
-
-
-En este caso la salida es $(x'_j x''_j) = (\mathtt{1\, 1})$. Es decir, del estado $a$ se puede pasar al estado $a$ de nuevo si la entrada es \bits{0} (produciendo una salida $\mathtt{0 \, 0}$) o bien al estado $b$, si la entrada es \bits{1} (siendo en este caso la salida $\mathtt{1 \, 1}$).
-
-Esto es lo que podemos ver representado en el árbol de codificador. Si ahora suponemos que estamos en el estado $d = \mathtt{11}$ y que la entrada es $\mathtt{0}$, entonces ahora tendremos:
-
-\begin{displaymath}
-\begin{array}{l}
-	x'_j = m_j \oplus m_{j-2} = \mathtt{0} \oplus \mathtt{1} = \mathtt{1}\\
-	x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} = \mathtt{0} \oplus \mathtt{1} \oplus \mathtt{1} = \mathtt{0}
-\end{array}
-\end{displaymath}
-
-
-Habremos pasado del estado $d=\mathtt{1\, 1}$ al $c=\mathtt{1\, 0}$ produciendo una salida igual a $\mathtt{1 \, 0}$. Siguiendo este mismo proceso podemos ir construyendo todas las ramas del árbol, y si nos damos cuenta a partir de un determinado momento se va a ir repitiendo, dado que el codificador sólo cuenta con dos retardos, y por tanto la salida nunca va a depender de más de 2 bits anteriores al actual.
-
-
-Una forma más compacta de representar todas las posibles transiciones entre estados en un codificador convolucional es mediante un diagrama de rejilla\index{Diagrama de rejilla} o un diagrama de estados\index{Diagrama de estados}, tal y como se muestra en la figura \ref{fig:RejillayEstadosCodigoConvolucional}. 
-
-
-\begin{figure*}
-	\centering
-	\subfigure{\label{fig:RejillaCodigoConvolucional}\centering\includegraphics[width=6cm]{./Figuras/RejillaCodigoConvolucional2}}
-	\subfigure{\label{fig:EstadosCodigoConvolucional}\centering\includegraphics[width=6cm]{./Figuras/EstadosCodigoConvolucional}}
-		\caption{Diagrama de rejilla \subref{fig:RejillaCodigoConvolucional} y diagrama de estados \subref{fig:EstadosCodigoConvolucional} para el código convolucional $(2,1,2)$ del ejemplo.}	
-		\label{fig:RejillayEstadosCodigoConvolucional}
-\end{figure*}
-
-Ambas representaciones muestran esencialmente lo mismo: las distintas transiciones posibles entre los estados del codificador y los bits que se obtienen a la salida para cada una de estas transiciones.
-
-Una última forma de analizar este tipo de códigos es haciendo uso de polinomios en $D$ ($D$ representa un retardo unidad, equivalente a la $z^{-1}$ de la Transformada Z). Así, utilizando esta notación, nuestro codificador de ejemplo se podría representar mediante los siguientes polinomios generadores\index{Polinomio generador}:
-
-\begin{displaymath}
-\begin{array}{l}
-	G_1(D) = 1 + D^2\\
-	G_2(D) = 1 + D^1 + D^2
-\end{array}
-\end{displaymath}
-
-
-Esta representación nos permite obtener de forma muy sencilla la salida del codificador a cualquier secuencia binaria de entrada. Si, por ejemplo, tuviésemos a la entrada la secuencia $\mathtt{110111001000}$, que puede escribirse de forma polinomial como $1 + D + D^3 + D^4 + D^5 + D^8$, la salida vendrá dada por:
-
-\begin{displaymath}
-	\begin{array}{ll}
-	X'_j(D) & = M(D) G_1(D) = (1 + D + D^3 + D^4 + D^5 + D^8) (1 + D^2) = \\
-			& = 1 + D + D^2 + D^4 + D^6 + D^7 + D^8 + D^{10} = \mathtt{11101011101}
-	\end{array}
-\end{displaymath}
-
-\begin{displaymath}
-	\begin{array}{ll}
-	X''_j(D) & = M(D) G_2(D) = (1 + D + D^3 + D^4 + D^5 + D^8) (1 + D^1 + D^2) = \\
-			& = 1 + D^5 + D^7 + D^8 + D^9 + D^{10} = \mathtt{10000101111}
-	\end{array}
-\end{displaymath}
-
-Finalmente, la salida se obtiene intercalando los bits anteriores:
-
-\begin{displaymath}
-	x_j = \mathtt{11\, 10\, 10\, 00\, 10\, 01\, 10\, 11\, 11\, 01\, 11}
-\end{displaymath}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Decodificación. Algoritmo de Viterbi}\index{Viterbi, Algoritmo de}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Existen varias formas de decodificar una secuencia binaria obtenida con un codificador convolucional. Nosotros no obstante nos vamos a centrar en estudiar el algoritmo de Viterbi, que permite implementar un receptor de máxima verosimilitud aunque a costa de un gran consumo de memoria por parte del decodificador. 
-
-Vamos a seguir con nuestro codificador de ejemplo, que recordamos venía dado por las siguientes expresiones:
-
-\begin{displaymath}
-	\begin{array}{l}
-		x'_j = m_j \oplus m_{j-2} \\
-		x''_j = m_j \oplus m_{j-1} \oplus m_{j-2} \\
-	\end{array}
-\end{displaymath}
-
-Vamos a suponer que partimos del estado inicial $a=\mathtt{00}$ y que también terminamos en ese mismo estado (para ello basta con añadir dos ceros al final de la secuencia recibida). Supongamos también que la secuencia transmitida es $\mathtt{11010100}$ (ya hemos incluido los dos ceros al final para asegurar que el último estado sea el \bits{00}. La salida del codificador para esta secuencia de entrada es: $\mathtt{11\,10\,10\, 00\, 01 \, 00 \, 01 \, 11}$. 
-
-Supondremos por último que el canal es ideal, y que por tanto la secuencia recibida es exactamente igual a la transmitida, sin errores. 
-
-En la Figura \ref{fig:Viterbi_1} se muestran las dos primeras iteraciones del algoritmo. La secuencia de entrada se muestra en la parte inferior, y en el interior de cada nodo se muestra la distancia Hamming acumulada hasta ese punto. Partiendo del estado \bits{00} existen dos opciones: 
-
-\begin{itemize}
-	\item Ir al estado $b = \mathtt{01}$, con lo que la salida del codificador sería \bits{11}, tal y como indicamos junto a la flecha de la transición. En este caso la distancia Hamming entre esta salida (\bits{11}) y la entrada al codificador (\bits{11}) será cero. 
-	\item Continuar en el estado $a = \mathtt{00}$, siendo en este caso la salida del codificador \bits{00}. La distancia Hamming entre la salida (\bits{00}) y la entrada (\bits{11}) es de dos. 
-\end{itemize}
-
-En la segunda iteración repetimos el proceso, partiendo de los dos nodos que tenemos ahora ``activos''. Tenemos cuatro opciones:
-
-\begin{itemize}
-	\item Pasar del estado $a$ al $a$, sumando uno a la distancia Hamming acumulada, con lo que ahora sería de tres. 
-	\item Pasar del estado $a$ al $b$, obteniendo una distancia acumulada de tres.
-	\item Pasar del estado $b$ al $c$, que supone añadir dos a la distancia acumulada hasta entonces.
-	\item Pasar del estado $b$ al $d$, que suma cero a la distancia acumulada, manteniéndose ésta en este valor, por tanto. 
-\end{itemize}
-
-
-\begin{figure*}
-		\centering\includegraphics[width=10cm]{./Figuras/Viterbi_1}
-		\caption{Primeras dos iteraciones del algoritmo de Viterbi.}	
-		\label{fig:Viterbi_1}
-	\end{figure*}
-
-Llegamos ahora a la tercera iteración, mostrada en la Figura \ref{fig:Viterbi_2}. El proceso es idéntico al que hemos seguido hasta ahora, aunque ahora nos encontramos con que a cada estado podemos llegar desde dos estados distintos. Por ejemplo, al estado $d$ se puede llegar desde el propio estado $d$, añadiendo dos a la distancia acumulada, que totalizaría dos, o bien desde el estado $b$, siendo en este caso la distancia acumulada igual a tres (tres del estado anterior más cero debido a esta transición). Lo que haremos en este caso es descartar aquel camino con una mayor distancia acumulada (el que viene del nodo $b$, y que está marcado con línea de puntos en la figura), dejando únicamente ``vivo'' el camino con menor distancia Hamming acumulada. 
-
-
-\begin{figure*}
-	\centering\includegraphics[width=10cm]{./Figuras/Viterbi_2}
-		\caption{Tercera iteración del algoritmo de Viterbi.}	
-		\label{fig:Viterbi_2}
-\end{figure*}
-
-En la figura \ref{fig:Viterbi_3} se muestra cómo quedaría el diagrama una vez que hayamos eliminado los caminos con mayor distancia acumulada en cada uno de los nodos. 
-
-\begin{figure*}
-	\centering\includegraphics[width=10cm]{./Figuras/Viterbi_3}
-		\caption{tercera iteración del algoritmo de Viterbi, tras eliminar los caminos con mayor distancia Hamming acumulada.}	
-		\label{fig:Viterbi_3}
-\end{figure*}
-
-
-En la Figura \ref{fig:Viterbi_4} se muestra la siguiente iteración del algoritmo, con los caminos con mayor distancia acumulada marcados con línea discontinua. 
-
-\begin{figure*}
-	\centering\includegraphics[width=10cm]{./Figuras/Viterbi_4}
-		\caption{Cuarta iteración del algoritmo de Viterbi.}	
-		\label{fig:Viterbi_4}
-\end{figure*}
-
-Por último, en la figura \ref{fig:Viterbi_5} se muestra el estado final del algoritmo, una vez que hemos llegado al último estado. El camino con menor distancia Hamming acumulada se ha destacado en línea más gruesa. Podemos comprobar que la salida del sistema para este camino coincide de forma exacta con la entrada, algo que no nos debería sorprender, pues hemos supuesto que no ha habido ningún error en la transmisión. 
-
-\begin{figure*}
-	\centering\includegraphics[width=10cm]{./Figuras/Viterbi_5}
-		\caption{Resultado final del algoritmo de Viterbi.}	
-		\label{fig:Viterbi_5}
-\end{figure*}
 
 
 
