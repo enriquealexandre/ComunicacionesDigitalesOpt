@@ -41,7 +41,7 @@ A pesar de su simplicidad, los códigos de repetición se utilizan todavía en a
 			
 	\item \textrm{Para probar el sistema construido, simularemos un vector con 10.000 bits aleatorios, que haremos pasar por el codificador, canal y decodificador configurados con $n=3$ y $p=0.02$:}
 	
- 		\CodigoFuente{bitsTx = round(rand(1,10000));}\\
+ 		\CodigoFuente{bitsTx = randi([0,1],[1,1e4]);}\\
 		\CodigoFuente{codigoTx = CodificadorRepeticion(bitsTx, 3);}\\
 		\CodigoFuente{codigoRx = Canal(codigoTx, 0.02);}\\
 		\CodigoFuente{bitsRx = DecodificadorRepeticion(codigoRx, 3);}
