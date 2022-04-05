@@ -32,15 +32,15 @@ En este caso vamos a utilizar funciones propias de Matlab para la codificación 
 		\item Vamos a reproducir el codificador de ejemplo que aparece en los apuntes del tema:
 		%{\begin{figure*}[h!]\centering\includegraphics[width=10cm]{../Apuntes/Figuras/CodificadorConvolucional}\end{figure*}
 
-		Como se puede ver en el esquema, se trata de un codificador que tiene un total de 2 retardos. El primer bit de salida se calcula a partir del bit actual y del bit de hace dos instantes de tiempo. Esto se puede codificar como que ese primer bit se calcula con una máscara que sería $[1 0 1]$, donde el primer '1' representa que utilizamos el bit actual, el '0' indica que no utilizamos el bit del instante anterior, y el último '1' indica que sí que utilizamos el bit de hace dos instantes de tiempo. 
+		Como se puede ver en el esquema, se trata de un codificador que tiene un total de 2 retardos. El primer bit de salida se calcula a partir del bit actual y del bit de hace dos instantes de tiempo. Esto se puede codificar como que ese primer bit se calcula con una máscara que sería [\bits{1 0 1}], donde el primer 'bits{1}' representa que utilizamos el bit actual, el '\bits{0}' indica que no utilizamos el bit del instante anterior, y el último '\bits{1}' indica que sí que utilizamos el bit de hace dos instantes de tiempo. 
 
-		De forma similar, el segundo bit de salida se obtiene a partir del bit actual, del bit anterior y de bit de hace dos instantes de tiempo. En este caso la máscara sería $[1 1 1]$. 
+		De forma similar, el segundo bit de salida se obtiene a partir del bit actual, del bit anterior y de bit de hace dos instantes de tiempo. En este caso la máscara sería [\bits{1 1 1}]. 
 
 		Con esto, vamos a utilizar la función \texttt{poly2trellis} que genera la representación del código convolucional a partir de dos parámetros:
 
 		\begin{itemize}
 				\item El número de instantes de tiempo que se consideran en el codificador (en nuestro caso, 3, el actual más los dos bits anteriores).
-				\item Las máscaras que hemos visto antes para cada uno de los bits de salida, aunque convertidas a formato octal. En nuestro caso sería $[5 7]$.
+				\item Las máscaras que hemos visto antes para cada uno de los bits de salida, aunque convertidas a formato octal. En nuestro caso sería $[5 \, ,\, 7]$.
 		\end{itemize}
 
 		Ejecutad ese comando y guardad la configuración del codificador. Si abris la variable que devuelve esta función, podéis ver todos los parámetros del codificador: 
@@ -52,7 +52,7 @@ En este caso vamos a utilizar funciones propias de Matlab para la codificación 
 			\item Una matriz con la salida para cada estado actual y entrada. 
 		\end{itemize}
 		
-		\item Vamos a generar un vector de datos binario que coincida con la que se utiliza en los apuntes para el ejemplo de Viterbi: $[1 1 0 1 0 1 0 0 ]$.
+		\item Vamos a generar un vector de datos binario que coincida con la que se utiliza en los apuntes para el ejemplo de Viterbi: [\bits{1 1 0 1 0 1 0 0}].
 		\item Nos queda ahora codificar ese vector de datos binarios con el codificador convolucional que hemos diseñado. Para eso utilizaremos la función \texttt{convenc}.
 		\item Podéis observar la secuencia codificada y comprobar que coincide con la que se pone como ejemplo en los apuntes. 
 		\item Vamos ahora a decodificar esta secuencia utilizando el algoritmo de Viterbi. Para ello utilizaremos la función \texttt{vitdec}. Toma cinco argumentos:
@@ -65,7 +65,7 @@ En este caso vamos a utilizar funciones propias de Matlab para la codificación 
 		\end{itemize}
 		Comprueba que la señal a la salida del decodificador coincide con los datos de entrada del principio. 
 
-		\item Vamos a comprobar qué pasaría con una secuencia que tenga errores, como la del problema 2.12 de los apuntes: $[1 0 1 0 1 0 0 1 0 1 0 1 0 1 1 1]$. Decodificad esta secuencia de bits y deberíais comprobar que la salida coincide con la secuencia de entrada a pesar de los errores. 
+		\item Vamos a comprobar qué pasaría con una secuencia que tenga errores, como la del problema 2.12 de los apuntes: [\bits{1 0 1 0 1 0 0 1 0 1 0 1 0 1 1 1}]. Decodificad esta secuencia de bits y deberíais comprobar que la salida coincide con la secuencia de entrada a pesar de los errores. 
 	\end{enumerate}
 
 \subsection{Ejemplo más general}
