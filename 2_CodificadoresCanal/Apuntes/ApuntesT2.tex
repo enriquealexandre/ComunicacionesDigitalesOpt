@@ -1,4 +1,4 @@
-\documentclass[es,apuntes]{uah}
+\documentclass[es,apuntes,12pt]{uah}
 
 \usepackage{subfigure}
 \usepackage{amssymb}
@@ -11,7 +11,7 @@
 \titulacion{Optativa GIEC y GIT}
 \departamento{Teoría de la Señal y Comunicaciones}
 \asignatura{Comunicaciones Digitales}{}
-\curso{2021/2022} % Do not show year
+\curso{2021/2022} 
 
 \maketitle
 
@@ -703,7 +703,7 @@ En la figura \ref{fig:Viterbi_3} se muestra cómo quedaría el diagrama una vez 
 
 \begin{figure*}
 	\centering\includegraphics[width=10cm]{./Figuras/Viterbi_3}
-		\caption{tercera iteración del algoritmo de Viterbi, tras eliminar los caminos con mayor distancia Hamming acumulada.}	
+		\caption{Tercera iteración del algoritmo de Viterbi, tras eliminar los caminos con mayor distancia Hamming acumulada.}	
 		\label{fig:Viterbi_3}
 \end{figure*}
 
@@ -994,7 +994,7 @@ El proceso consta de los siguientes pasos:
 	
 
 
-	\ProblemaBoletin{
+	\Problema{
 		Para un código de repetición con $n=5$, y una probabilidad de error de bit $p_e = 10^{-3}$, calcule:
 		\begin{enumerate}
 			\item La eficiencia del codificador.
@@ -1026,7 +1026,7 @@ El proceso consta de los siguientes pasos:
 
 		}	
 	
-	\ProblemaBoletin{
+	\Problema{
 		Calcule la distancia Hamming entre la palabra \bits{0100101} y las siguientes palabras: \bits{0111111}, \bits{1010111} y \bits{1101000}.
 
 		}
@@ -1040,7 +1040,7 @@ El proceso consta de los siguientes pasos:
 
 		}
 
-	\ProblemaBoletin{Calcule la probabilidad de que una palabra tenga a) errores detectados b) errores no detectados y c) no tenga errores cuando usamos un código de paridad con $n=4$ y $p_e=0.1$.
+	\Problema{Calcule la probabilidad de que una palabra tenga a) errores detectados b) errores no detectados y c) no tenga errores cuando usamos un código de paridad con $n=4$ y $p_e=0.1$.
 
 		\textsc{Nota}: Considere que $P(i,n) = \left ( \begin{array}{c}n \\i \end{array} \right ) \cdot p_e^i \cdot (1-p_e)^{n-i}$}
 		{
@@ -1052,16 +1052,16 @@ El proceso consta de los siguientes pasos:
 		}
 		{}{}
 	
-	\ProblemaBoletin{Un código tiene las siguientes siete palabras código: \bits{0010}, \bits{0100}, \bits{1110}, \bits{1000}, \bits{1010}, \bits{1100}, \bits{0110}.
+	\Problema{Un código tiene las siguientes siete palabras código: \bits{0010}, \bits{0100}, \bits{1110}, \bits{1000}, \bits{1010}, \bits{1100}, \bits{0110}.
 			¿Es lineal?}
 		{No.\\}{}{}
 		
 	
 	
-	\ProblemaBoletin{Un código de repetición puede verse como un caso particular de un código bloque lineal. Para el caso $(4,1)$, ¿Cuáles serían sus matrices generadora y de comprobación de paridad?}
+	\Problema{Un código de repetición puede verse como un caso particular de un código bloque lineal. Para el caso $(4,1)$, ¿Cuáles serían sus matrices generadora y de comprobación de paridad?}
 		{$G = (1 1 1 1)$\\}{}{}
 	
-	\ProblemaBoletin{La matriz de codificación de un código lineal Reed-Muller (3,1) es:
+	\Problema{La matriz de codificación de un código lineal Reed-Muller (3,1) es:
 		\begin{displaymath}
 			\mathbf{G} = \left ( \begin{array}{cccccccc}
 				\mathtt{1} & \mathtt{1} & \mathtt{1} & \mathtt{1} & \mathtt{1} & \mathtt{1} & \mathtt{1} & \mathtt{1}\\
@@ -1095,7 +1095,7 @@ El proceso consta de los siguientes pasos:
 }
 {}{}
 
-	\ProblemaBoletin{Dada la matriz generadora para un código lineal $(7,3)$:
+	\Problema{Dada la matriz generadora para un código lineal $(7,3)$:
 		\begin{displaymath}
 			\mathbf{G} = \left (
 			\begin{array}{ccccccc}
@@ -1149,7 +1149,7 @@ El proceso consta de los siguientes pasos:
 		{}{}
 	
 
-	\ProblemaBoletin{Construya el árbol y el diagrama de estados para un código convolucional $(3,1,3)$ definido por las siguientes ecuaciones:
+	\Problema{Construya el árbol y el diagrama de estados para un código convolucional $(3,1,3)$ definido por las siguientes ecuaciones:
 		\begin{displaymath}
 			\begin{array}{l}
 				x'_j = m_j \\
@@ -1161,7 +1161,7 @@ El proceso consta de los siguientes pasos:
 		{\begin{figure*}[h!]\centering\includegraphics[width=6cm]{./Figuras/Ejercicio8_estados}\end{figure*} \ \\}
 		{}{}
 
-	\ProblemaBoletin{Considere un código convolucional de tasa $R_c = 1/2$ con matriz generadora $\mathbf{G} = \left [D \,\,\, D^2+1 \right]$. Dibuje su diagrama de estados y su diagrama de rejilla etiquetando cada transición con el bit de entrada y los dos bits de salida.
+	\Problema{Considere un código convolucional de tasa $R_c = 1/2$ con matriz generadora $\mathbf{G} = \left [D \,\,\, D^2+1 \right]$. Dibuje su diagrama de estados y su diagrama de rejilla etiquetando cada transición con el bit de entrada y los dos bits de salida.
 	}
 	{
 	\begin{figure}[h!]\centering
@@ -1170,14 +1170,14 @@ El proceso consta de los siguientes pasos:
 	\end{figure} \ \\
   }{}{}
 	
-	\ProblemaBoletin{Considere un código convolucional de tasa $R_c = 1/2$ con matriz generadora $\mathbf{G} = \left [1 \,\,\,\, D+1 \right]$. Dibuje su diagrama de estados y su diagrama de rejilla etiquetando cada transición con el bit de entrada y los dos bits de salida.}
+	\Problema{Considere un código convolucional de tasa $R_c = 1/2$ con matriz generadora $\mathbf{G} = \left [1 \,\,\,\, D+1 \right]$. Dibuje su diagrama de estados y su diagrama de rejilla etiquetando cada transición con el bit de entrada y los dos bits de salida.}
 	{\begin{figure}[h!]\centering
 		\begin{subfigure}[]{}\includegraphics[width=4cm]{./Figuras/Ejercicio10_estados}\end{subfigure}
 		\begin{subfigure}[]{}\includegraphics[width=4cm]{./Figuras/Ejercicio10_rejilla}\end{subfigure}
 	\end{figure} \ \\}{}{}
 
 		
-	\ProblemaBoletin{Determine la salida del codificador $(3,2,1)$ de la figura para la entrada $(\mathtt{1101011101110000})$.
+	\Problema{Determine la salida del codificador $(3,2,1)$ de la figura para la entrada $(\mathtt{1101011101110000})$.
 	\begin{figure*}[h!]
 	\centering\includegraphics[width=7cm]{./Figuras/EjercicioConvolucionales}
 	\label{fig:EjercicioConvolucionales}
@@ -1188,7 +1188,7 @@ El proceso consta de los siguientes pasos:
 	 $x_j''' = m_{j} = \bits{1101011101110000}$\\}{}{}
 	
 	
-	\ProblemaBoletin{Para el codificador utilizado en los ejemplos del texto: 
+	\Problema{Para el codificador utilizado en los ejemplos del texto: 
 	\begin{displaymath}
 	\begin{array}{l}
 		x'_j = m_j \oplus m_{j-2} \\
@@ -1205,7 +1205,7 @@ El proceso consta de los siguientes pasos:
 	
 	
 	
-	\ProblemaBoletin{Un código Golay (23,12) es un código perfecto capaz de corregir 3 errores. Este código se puede definir de forma cíclica mediante cualquiera de los siguientes polinomios generadores:
+	\Problema{Un código Golay (23,12) es un código perfecto capaz de corregir 3 errores. Este código se puede definir de forma cíclica mediante cualquiera de los siguientes polinomios generadores:
 	\begin{displaymath}
 		\begin{array}{l}
 		g_1(x) = x^{11}+x^{10}+x^6+x^5+x^4+x^2+1 \\
