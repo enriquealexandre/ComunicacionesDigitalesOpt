@@ -90,7 +90,7 @@ La primera parte es idéntica al caso anterior: generaremos un vector aleatorio 
 			<x, s_i> - \frac{1}{2} ||s_i||^2	\quad i=1, \cdots, 2^k
 		\end{displaymath}
 		siendo $<x, s_i>$ el producto escalar entre el vector recibido de $n$ símbolos y el vector $s_i$, y $||s_i||^2$ la energía de la señal $s_i$ que se calcula como la suma al cuadrado de todas sus componentes.
-		\item Con lo anterior, obtendréis $2_k$ valores distintos para cada vector de entrada de $n$ bits. El decisor deberá elegir el {\bf menor} de todos estos valores, y el vector transmitido con el que se corresponda será la señal que supondremos que se ha transmitido. 
+		\item Con lo anterior, obtendréis $2^k$ valores distintos para cada vector de entrada de $n$ bits. El decisor deberá elegir el {\bf mayor} de todos estos valores, y el vector transmitido con el que se corresponda será la señal que supondremos que se ha transmitido. 
 		\item Una vez hayamos completado este proceso para toda la señal de entrada y tengamos la secuencia de bits completa a la salida del decisor, realizamos la decodificación Hamming y el cálculo de la probabilidad de error exactamente igual que antes. 
 	\end{enumerate}
 \end{enumerate}
