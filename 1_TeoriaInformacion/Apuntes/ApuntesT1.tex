@@ -8,7 +8,7 @@
 \titulacion{Optativa GIEC y GIT}
 \departamento{Teoría de la Señal y Comunicaciones}
 \asignatura{Comunicaciones Digitales}{}
-\curso{2021/2022} % Do not show year
+\curso{2022/2023} 
 
 \maketitle
 
@@ -17,36 +17,38 @@
 \section{Medida de la información}
 %%%%%%%%%%%%%%%%%%%%%%%
 
-Podemos modelar la salida de cualquier fuente de información (voz, vídeo, datos, etc.) como un proceso aleatorio. Para el caso de procesos aleatorios discretos, estacionarios y sin memoria, se puede definir la cantidad de información como:
+Cuando nos referimos a un sistema de comunicaciones estamos acostumbrados a decir que tiene como objetivo la transmisión de información entre dos puntos. Ahora bien, cabe preguntarse ¿qué entendemos por información? 
+Podemos modelar la salida de cualquier fuente (voz, vídeo, datos, etc.) como un proceso aleatorio. Para el caso de procesos aleatorios discretos, estacionarios y sin memoria, se puede definir la {\bf cantidad de información} como:
 
 \begin{displaymath}
 	I = -log_2(p_k)
 \end{displaymath}
 
-donde $p_k$ representa la probabilidad de aparición de cada uno de los símbolos de la fuente. 
+donde $p_k$ representa la probabilidad de aparición de cada uno de los símbolos de la fuente. Si consideramos el caso de que uno de los símbolos tenga $p_k=1$, es decir, que no exista ningún tipo de incertidumbre, sino que sepamos perfectamente qué símbolo se va a transmitir en todo momento, podemos ver que la información de este tipo de fuente es $0$. Para cualquier otro caso la información tomará un valor positivo, y será tanto mayor cuanto menor sea la probabilidad de ocurrencia del símbolo.
 
-De forma similar se puede definir la {\bf entropía} de la fuente como:
+Si cualculamos la media estadística de los valores de información de una fuente para cada uno de los símbolos obtenemos lo que se denomina {\bf entropía} de la fuente:
 
 \begin{equation}
-	H = - \sum_{k=0}^{N-1}p_k \cdot  log_2(p_k)
+	H = - \sum_{k=1}^{N}p_k \cdot  log_2(p_k)
 \end{equation}
 
-Habitualmente la entropía se mide en bits, y nos da una idea de cuántos bits por símbolo como mínimo se necesitan para codificar una determinada fuente de forma exacta.
+Habitualmente la entropía se mide en bits (siempre que se use el logaritmo con base 2. Si se usase un logaritmo neperiano, la unidad serían \emph{nats}), y nos da una idea de cuántos bits por símbolo como mínimo se necesitan para codificar una determinada fuente de forma exacta. Visto desde otro punto de vista, también podemos entender la entropía como una medida de la incertidumbre sobre el valor concreto que tomará una variable aleatoria (en nuestro caso, los símbolos transmitidos por la fuente). Igual que decíamos antes, si la variable toma siempre el mismo valor (es decir, que haya un $p_k$ con $p_k=1$), no tenemos ninguna incertidumbre sobre el valor que tomará el símbolo transmitido, y por tanto la entropía será cero.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{Codificación de fuente}
 %%%%%%%%%%%%%%%%%%%%%%%
 
-La codificación de fuente, o codificación sin ruido, se refiere al conjunto de técnicas que permiten reducir el número de bits necesarios para representar la salida de una fuente sin perder la posibilidad de reconstrucción perfecta. 
+La codificación de fuente, o codificación sin ruido, se refiere al conjunto de técnicas que permiten reducir el número de bits necesarios para representar la salida de una fuente sin perder la posibilidad de reconstrucción perfecta. En general, un codificador fuente utilizará palabras binarias con menos bits para aquellos símbolos más probables, y más bits para las menos probables. Un ejemplo de código de este tipo es el código Morse, que por ejemplo utiliza un '.' para la letra \emph{E}, muy probable en general, y el código '--.-' para la \emph{Q}, mucho menos probable. 
 
 El teorema de codificación de fuente de Shannon nos dice que, para reconstruir perfectamente una fuente, {\bf es posible utilizar un código con un número de bits por símbolo nunca inferior a la entropía de la fuente}.
 
-En la práctica existen distintos algoritmos de codificación de fuente, pero nosotros vamos a centrarnos sólo en los códigos Huffman, creados por David Huffmann en 1951 cuando preparaba un trabajo para una asignatura de doctorado en el MIT, donde estudiaba.
+En la práctica existen distintos algoritmos de codificación de fuente, pero nosotros vamos a centrarnos en los denominados códigos prefijo (\emph{prefix codes}), que se caracterizan porque ninguna palabra código es \emph{prefijo} de otra palabra código. La ventaja de esta aproximación es que podemos transmitir los códigos binarios de los símbolos uno tras otro, sin ninguna separación, y el decodificador será capaz de reconstruir el mensaje sin ninguna ambigüedad. Un caso particular de códigos prefijo, aunque en muchos casos se les confunde, son los códigos Huffman, creados por David Huffmann en 1951 cuando preparaba un trabajo para una asignatura de doctorado en el MIT, donde estudiaba.
 
 
 \subsection{Codificación Huffman}
 
-La idea que hay detrás de los {\bf códigos Huffman} es muy sencilla: se asignan palabras con más bits a aquellos símbolos de la fuente menos probables, y palabras más cortas a los símbolos más probables. Para hacerlo, empezamos uniendo los dos símbolos menos probables para generar un nuevo símbolo cuya probabilidad de aparición será la suma de las dos probabilidades anteriores. Este proceso se repite hasta que sólo quede un símbolo, y de esta forma se va generando un árbol. 
+La idea que hay detrás de los {\bf códigos Huffman} es muy sencilla: como decíamos, se asignan palabras con más bits a aquellos símbolos de la fuente menos probables, y palabras más cortas a los símbolos más probables. Para hacerlo, empezamos uniendo los dos símbolos menos probables para generar un nuevo símbolo cuya probabilidad de aparición será la suma de las dos probabilidades anteriores. Este proceso se repite hasta que sólo quede un símbolo, y de esta forma se va generando un árbol. 
 
 
 Ahora, empezando desde la raíz del árbol, vamos asignando \bits{0}s y \bits{1}s a cualesquiera dos ramas que surjan del mismo nodo, y de esta manera se irá creando el código. 
@@ -242,6 +244,75 @@ CODIGO1 & CODIGO2  & CADENA & CARACTER & Salida & Dicc.\\
 
 \ \\
 Se puede ver que la salida es la misma palabra que había a la entrada y que se ha generado también el mismo diccionario que se generó en el proceso de codificación. 
+
+
+
+\section{Canal discreto sin memoria}
+
+En la siguiente figura se puede ver un esquema típico de un sistema de comunicaciones digitales. El canal, tal y como se muestra en la figura, tiene a su entrada la señal analógica producida por el modulador y produce a su salida otra señal analógica consistente en la anterior a la que se le suma ruido aditivo gausiano. Este tipo de canal se denomina {\bf canal gausiano}. 
+
+\begin{center}\includegraphics[width=14cm]{../Transparencias/Figuras/Sistema2.pdf}\end{center}
+
+Una alternativa a lo anterior es considerar un canal que tenga a su entrada y salida señales discretas, tal y como se muestra en la siguiente figura:
+
+\begin{center}\includegraphics[width=14cm]{../Transparencias/Figuras/Sistema3.pdf}\end{center}
+
+En este caso nos encontramos con lo que se denomina un {\bf canal digital}, que tiene a su entrada un símbolo producido por el codificador, y devuelve otro símbolo que será posteriormente interpretado por el decodificador. El canal digital es un caso particular de lo que se denomina {\bf canal discreto sin memoria}, que relaciona una variable aleatoria $X$ con función de densidad de probabilidad discreta con otra variable aleatoria $Y$, también discreta. La diferencia entre ambas aproximaciones es que el canal discreto equivalente contempla la posibilidad de que los alfabetos de los símbolos a entrada y salida sean distintos. 
+
+Una forma de modelar el funcionamiento de este tipo de canales es mediante una matriz que indique las distintas probabilidades de transición de un símbolo a la entrada a otro a la salida:
+
+\begin{displaymath}
+	\mathbf{P} = \left ( \begin{array}{cccc} P_{\hat{S}/S}(\hat{s_1}|s_1) & P_{\hat{S}/S}(\hat{s_2}|s_1) & \cdots &  P_{\hat{S}/S}(\hat{s_N}|s_1) \\ 
+	  \vdots & \vdots &  & \vdots \\
+	  P_{\hat{S}/S}(\hat{s_1}|s_N) & P_{\hat{S}/S}(\hat{s_2}|s_N) & \cdots &  P_{\hat{S}/S}(\hat{s_N}|s_N) \\ \end{array} \right )
+\end{displaymath}
+
+Esta matriz se denomina {\bf matriz de transición} o {\bf matriz de canal}, y cumple la propiedad de que las suma de los elementos de cada fila tiene que ser uno. 
+
+Un caso particular del canal discreto sin memoria en el que el número de símbolos tanto a la entrada como a la salida es dos, es el {\bf canal binario simétrico}. En este caso la matriz de transición viene dada por una expresión como la siguiente:
+
+\begin{displaymath}
+	\mathbf{P} = \left ( \begin{array}{cc} 1-p & p \\ p & 1-p \\ \end{array} \right )
+\end{displaymath}
+
+donde el valor de $p$ equivale a la probabilidad de error de bit del sistema. 
+
+
+\section{Entropía condicional e información mútua}
+
+Hemos visto antes que la entropía de una fuente se puede interpretar como la cantidad de incertidumbre que tenemos sobre dicha fuente. Podríamos preguntarnos cuál es la incertidumbre que tenemos sobre los símbolos transmitidos una vez que hemos podido observar los símbolos recibidos. Para conseguir esto se puede extender el concepto de entropía visto antes y definir la entropía condicional, $H(X|Y)$. Por tanto, si $H(X)$ es la incertidumbre de los símbolos transmitidos y $H(X|Y)$ la incertibumbre de los símbolos transmitidos tras observar los símbolos recibidos, la diferencia entre ambas, $H(X) - H(X|Y)$ se puede interpretar como la cantidad de incertidumbre sobre los símbolos transmitidos que somos capaces de resolver gracias a observar los símbolos recibidos. A esta diferencia se le denomina información mútua:
+
+\begin{displaymath}
+    I(X,Y)= H(X) - H(X|Y)
+\end{displaymath}
+
+Podemos ver dos casos extremos
+
+Visto de otro modo, podemos entender la información mútua entre la entrada y la salida de un canal como la cantidad de información que pasa de la entrada a la salida cuando se utiliza dicho canal. 
+
+
+
+\section{Capacidad del canal}
+A partir de los conceptos de entropía e información mútua podemos determinar la cantidad máxima de información que se puede transmitir a través de un canal. Si pensamos en la información mútua como la cantidad de información que pasa de la entrada a la salida de un canal, es razonable pensar que la capacidad del canal será el valor máximo que pueda tomar la información mútua entre la entrada y la salida, que en la práctica dependerá no sólo de las características del canal, sino también de la distribución de probabilidades a la entrada. De forma matemática:
+
+\begin{displaymath}
+	C = \max_{p(x_i)} I(X,Y)
+\end{displaymath}
+
+En general el cálculo de la capacidad del canal es una tarea complicada, pero podemos hacerlo para un caso sencillo como es el del canal binario simétrico que introdujimos antes con símbolos equiprobables a la entrada. En ese caso, es posible comprobar que la capacidad del canal viene dada por la siguiente expresión:
+
+\begin{displaymath}
+C = 1 + p log_2 p + (1-p)log_2(1-p) 
+\end{displaymath}
+
+siendo $p$ la probabilidad de transición del canal. Podemos pensar en dos casos particulares para entender mejor qué sucede:
+
+\begin{itemize}
+\item Si $p=0$, es decir, si el canal no introduce errores, obtenemos que el valor máximo posible de la capacidad del canal , $C=1$ bit. Esto es, el canal puede transmitir un bit de información, que es exactamente la información que hay a la entrada. 
+\item Si $p=1/2$, obtenemos el valor mínimo de la capacidad del canal, $C=0$ bits. En este caso el canal no es capaz de transmitir nada de información, y estaríamos hablando de un canal \emph{inútil}. 
+\end{itemize}
+
+
 
 %\printindex
 \end{document}

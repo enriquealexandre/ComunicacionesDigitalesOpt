@@ -10,6 +10,7 @@
 \usepackage{listings}
 \usepackage{verbatim}
 
+
 \usetheme{UAH}
 \usecolortheme{UAH}
 \setbeamertemplate{navigation symbols}{} 
@@ -20,7 +21,7 @@
 \title[Teoría de la Información]{Teoría de la Información}
 \author{Enrique Alexandre}
 \institute{Dpto. de Teoría de la Señal y Comunicaciones}
-\date{Curso 2021/2022}
+\date{Curso 2022/2023}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -65,17 +66,44 @@
 \section{Introducción}
 
 \begin{frame}{Introducción}
+\begin{itemize}
+  \item Objetivos de un sistema de Comunicaciones Digitales:
   \begin{itemize}
-    \item ¿Qué pretendemos en Comunicaciones Digitales?
-    \begin{itemize}
-      \item Adaptación al medio de transmisión
-      \item Protección de la información
-      \item Compartir recursos
-      \item Detección de señales
-      \item Compensación de las distorsiones del canal
-    \end{itemize}
+    \item Maximizar la velocidad de transmisión (bitrate, $R$)
+    \item Minimizar la probabilidad de error ($P_e$)
+    \item Minimizar la energía necesaria ($E_b$ ó $E_b/N_0$)
+    \item Minimizar el ancho de banda necesario ($B$)
+    \item Maximizar el número de usuarios en el sistema
+    \item Minimizar el coste
+  \end{itemize}
 \end{itemize}
 \end{frame}
+
+\begin{frame}{Introducción}
+  \begin{itemize}
+    \item Límites a los objetivos anteriores:
+    \begin{itemize}
+      \item Ancho de banda mínimo de Nyquist
+      \item {\bf Límite de Shannon}
+      \item Limitaciones legales
+      \item Limitaciones tecnológicas
+      \item Otras limitaciones
+    \end{itemize}
+  \end{itemize}
+  \end{frame}
+
+% \begin{frame}{Introducción}
+%   \begin{itemize}
+%     \item ¿Qué pretendemos en Comunicaciones Digitales?
+%     \begin{itemize}
+%       \item Adaptación al medio de transmisión
+%       \item Protección de la información
+%       \item Compartir recursos
+%       \item Detección de señales
+%       \item Compensación de las distorsiones del canal
+%     \end{itemize}
+% \end{itemize}
+% \end{frame}
 
 \subsection{Ejemplo}
 \begin{frame}{Introducción}{Ejemplo}
@@ -98,25 +126,97 @@
   \centering \includegraphics[width=0.9\textwidth]{./Figuras/Wifi5.pdf}
 \end{frame}
 
+\section{Modelos de canal}
+\subsection{Esquema del sistema}
+\begin{frame}{Modelos de canal}{Esquema del sistema}
+  \centering \includegraphics[width=0.9\textwidth]{./Figuras/Sistema1.pdf}
+\end{frame}
+
+\subsection{Canal gaussiano}
+\begin{frame}{Modelos de canal}{Canal gaussiano}
+  \centering \includegraphics[width=0.9\textwidth]{./Figuras/Sistema2.pdf}
+\end{frame}
+
+\subsection{Canal digital}
+\begin{frame}{Modelos de canal}{Canal digital}
+  \centering \includegraphics[width=0.9\textwidth]{./Figuras/Sistema3.pdf}
+\end{frame}
+
+\begin{frame}{Modelos de canal}{Canal digital}
+  \begin{itemize}
+    \item Entrada al canal: alfabeto de símbolos $\{s_i, i=1,\cdots ,N\}$
+    \item Salida del canal: alfabeto de símbolos $\{\hat{s}_i, i=1,\cdots ,N\}$
+    \item Probabilidades de transición del canal:
+    \begin{displaymath}
+      \mathbf{P} = \left ( \begin{array}{cccc} P_{\hat{S}/S}(\hat{s_1}|s_1) & P_{\hat{S}/S}(\hat{s_2}|s_1) & \cdots &  P_{\hat{S}/S}(\hat{s_N}|s_1) \\ 
+        \vdots & \vdots &  & \vdots \\
+        P_{\hat{S}/S}(\hat{s_1}|s_N) & P_{\hat{S}/S}(\hat{s_2}|s_N) & \cdots &  P_{\hat{S}/S}(\hat{s_N}|s_N) \\ \end{array} \right )
+    \end{displaymath}
+  \end{itemize}
+\end{frame}
+
+\subsection{Canal binario simétrico}
+\begin{frame}{Modelos de canal}{Canal binario simétrico}
+  \begin{itemize}
+    \item Un caso particular del anterior es el {\bf canal binario simétrico} (BSC)
+    \item En ese caso, la matriz de probabilidades de transición quedaría:
+    \begin{displaymath}
+      \mathbf{P} = \left ( \begin{array}{cc} 1-p & p \\ p & 1-p \\ \end{array} \right )
+    \end{displaymath}
+    \item La $p$ equivaldría a la probabilidad de error de bit del sistema (BER)
+  \end{itemize}
+\end{frame}
+
+
 \section{Teoría de la información}
-\subsection{Medida de la información}
-\begin{frame}{Teoría de la información}{Medida de la información}
+\subsection{Medida de la información. Entropía}
+\begin{frame}{Teoría de la información}{Medida de la información. Entropía}
     \begin{itemize}
+    \item Queremos transmitir información, pero ¿qué es la información?
 		\item Se define la cantidad de información como:
 		\begin{displaymath}
         I = -log_2(p_k)
     \end{displaymath}
       siendo $p_k$ la probabilidad de aparición de cada uno de los posibles símbolos de la fuente. 
     
-    \item Se define la {\bf entropía} de una fuente como:
+    \item Se define la {\bf entropía} de una fuente $X$ como:
     \begin{displaymath}
-      H = - \sum_{k=0}^{N-1}p_k \cdot  log_2(p_k)
+      H(X) = - \sum_{k=1}^{N}p(x_k) \cdot  log_2(p(x_k))
     \end{displaymath}
     La entropía se mide en bits, e indica cuántos bits por símbolo como mínimo son necesarios para codificar la fuente.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Teoría de la información}{Codificación de fuente}
+\subsection{Entropía condicional e información mutua}
+\begin{frame}{Teoría de la información}{Entropía condicional e información mutua}
+  \begin{itemize}
+  \item De forma muy parecida se puede definir la {\bf entropía condicional} de dos variables, $H(X|Y)$.
+  \item Se puede interpretar como la medida de la incertidumbre que tenemos sobre el valor de $X$ una vez que conocemos el valor de $Y$.
+  \item Y a partir de ella se puede definir la {\bf información mutua}:
+  \begin{displaymath}
+    I(X,Y)= H(X) - H(X|Y)
+  \end{displaymath}
+  \item Representa la incertidumbre que hemos eliminado sobre el valor de $X$ mediante el conocimiento del valor de $Y$.
+\end{itemize}
+\end{frame}
+
+% \subsection{Capacidad de canal}
+% \begin{frame}{Teoría de la información}{Capacidad de canal}
+%   \begin{itemize}
+%   \item Dado un canal digital, podemos calcular la información mutua entre la entrada y la salida del canal. 
+%   \item Esta información mutua representa la información que nos aporta la salida del canal sobre la entrada.
+%   \item La capacidad del canal se define como el valor máximo posible de la información mútua.
+%   \item Vamos a intentar ver esto mejor con dos casos extremos:
+%   \begin{itemize}
+%     \item Canal sin errores 
+%     \item Canal binario con $p=0.5$
+%   \end{itemize}
+% \end{itemize}
+% \end{frame}
+
+
+\section{Codificación de fuente}
+\begin{frame}{Codificación de fuente}
   \begin{itemize}
   \item {\bf Objetivo}: Reducir el número de bits necesarios para representar la salida de una fuente. 
   \item {\bf Teorema de Shannon}: El número mínimo de bits por símbolo nunca va a ser inferior al valor de la entropía de la fuente.
@@ -129,7 +229,7 @@
 \end{frame}
 
 \subsection{Características de los códigos fuente}
-\begin{frame}{Teoría de la información}{Características de los códigos fuente}
+\begin{frame}{Codificación de fuente}{Características de los códigos fuente}
   \begin{itemize}
     \item {\bf Longitud media}: Se define como la longitud promedio de las palabras del código
     \begin{displaymath}
@@ -247,21 +347,21 @@
     \hline
     $0,2$ & $00$ \\
     \hline
-    $0,15$ & $00$ \\
+    $0,15$ & $110$ \\
     \hline
-    $0,13$ & $00$ \\
+    $0,13$ & $101$ \\
     \hline
-    $0,12$ & $00$ \\
+    $0,12$ & $011$ \\
     \hline
-    $0,1$ & $00$ \\
+    $0,1$ & $010$ \\
     \hline
-    $0,09$ & $00$ \\
+    $0,09$ & $1111$ \\
     \hline
-    $0,2$ & $00$ \\
+    $0,08$ & $1110$ \\
     \hline
-    $0,2$ & $00$ \\
+    $0,07$ & $1001$ \\
     \hline
-    $0,2$ & $00$ \\
+    $0,06$ & $1000$ \\
     \hline
   \end{tabular}
 \end{frame}
